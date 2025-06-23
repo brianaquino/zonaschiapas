@@ -239,7 +239,7 @@ fuente_lbprincipal = font.Font(family ="Helvetica", size = 14, weight="bold")
 tk.Label(ventana, text="MONUMENTOS DEL ESTADO DE CHIAPAS", background="#2C3E50", foreground="#ffffff", font= fuente_lbprincipal).pack()
 
 #imagen - logo INAH
-image = tk.PhotoImage(file= "C:/Users/briaq/OneDrive/Desktop/monumentos/R.png")
+image = tk.PhotoImage(file= "R.png")
 image = image.subsample(10,10)
 labelimagen = ttk.Label(ventana,image=image, background="gray95")
 labelimagen.place(x=10, y=10)
