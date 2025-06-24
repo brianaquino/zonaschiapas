@@ -343,30 +343,45 @@ def mostrar_detalle(event):
 
 
 def exportar_resultados():
+    seleccionados = treeview.selection()
+    exportar_todo = not seleccionados  # Si no hay selección, exportamos todo
+
     filas = treeview.get_children()
     if not filas:
         messagebox.showwarning("Sin resultados", "No hay datos en la tabla para exportar.")
         return
 
-    archivo = filedialog.asksaveasfilename(defaultextension=".csv", filetypes=[("Archivo CSV", "*.csv")])
+    archivo = filedialog.asksaveasfilename(
+        defaultextension=".csv",
+        filetypes=[("Archivo CSV", "*.csv")],
+        title="Guardar como"
+    )
     if not archivo:
         return  # Cancelado
 
     try:
         with open(archivo, mode="w", newline="", encoding="utf-8") as f:
             escritor = csv.writer(f)
+
             # Encabezados
             columnas = [treeview.heading(col)["text"] for col in treeview["columns"]]
             escritor.writerow(columnas)
-            # Filas
-            for fila in filas:
+
+            # Filas seleccionadas o todas
+            filas_a_exportar = seleccionados if not exportar_todo else filas
+
+            for fila in filas_a_exportar:
                 datos = treeview.item(fila)["values"]
                 escritor.writerow(datos)
 
-        messagebox.showinfo("Exportación exitosa", f"Datos exportados correctamente a:\n{archivo}")
+        if not exportar_todo:
+            messagebox.showinfo("Exportación exitosa", f"{len(seleccionados)} filas exportadas a:\n{archivo}")
+        else:
+            messagebox.showinfo("Exportación exitosa", f"Todos los datos fueron exportados a:\n{archivo}")
 
     except Exception as e:
         messagebox.showerror("Error al exportar", f"Ocurrió un error:\n{e}")
+
 
 
 # INTERFAZ
@@ -548,7 +563,7 @@ columnas = ("Municipio", "Clave", "Ficha Catalogo", "Sección", "Manzana", "Núm
             "Localización", "Barrio", "Siglo Construcción", "Catalogada", "Decretada",
             "Uso Actual", "Niveles", "Material Construcción", "Tipo de cubierta", "Conservación")
 
-treeview = ttk.Treeview(frame_resultados, columns=columnas, show="headings", yscrollcommand=scroll.set, xscrollcommand= h_scrollbar.set)
+treeview = ttk.Treeview(frame_resultados, columns=columnas, show="headings", yscrollcommand=scroll.set, xscrollcommand= h_scrollbar.set, selectmode="extended")
 for col in columnas:
     treeview.heading(col, text=col)
     treeview.column(col, anchor="center", width=80)
