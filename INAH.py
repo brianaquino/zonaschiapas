@@ -6,6 +6,66 @@ import mysql.connector
 import csv
 from tkinter import  filedialog
 
+# Modos de color
+modo_claro = {
+    "fondo": "gray95",
+    "texto": "black",
+    "entrada": "white",
+    "tree_bg": "#AAB7B8",
+    "tree_fg": "black"
+}
+
+modo_oscuro = {
+    "fondo": "#2C3E50",
+    "texto": "white",
+    "entrada": "#34495E",
+    "tree_bg": "#34495E",
+    "tree_fg": "white"
+}
+
+modo_actual = modo_claro  # Empieza en modo claro
+
+def aplicar_modo():
+    # Fondo de ventana y frames
+    ventana.config(bg=modo_actual["fondo"])
+    frame_principal.config(bg=modo_actual["fondo"])
+    frame_resultados.config(bg=modo_actual["fondo"])
+    frame_botones.config(bg=modo_actual["fondo"])
+    etiqueta_contador.config(bg=modo_actual["fondo"], fg=modo_actual["texto"])
+    labelimagen.config(background=modo_actual["fondo"])
+
+    # Labels
+    for widget in frame_principal.winfo_children():
+        if isinstance(widget, tk.Label):
+            widget.config(bg=modo_actual["fondo"], fg=modo_actual["texto"])
+    
+    # Entradas
+    for widget in frame_principal.winfo_children():
+        if isinstance(widget, tk.Entry):
+            widget.config(bg=modo_actual["entrada"], fg=modo_actual["texto"], insertbackground=modo_actual["texto"])
+
+    # Treeview
+    style.configure("Treeview", background=modo_actual["tree_bg"], foreground=modo_actual["tree_fg"])
+    style.configure("Treeview.Heading", background=modo_actual["tree_bg"], foreground="black")
+    treeview.tag_configure('dark', background=modo_actual["tree_bg"], foreground=modo_actual["tree_fg"])
+
+    boton_modo.config(bg=modo_actual["fondo"])
+
+
+
+def alternar_modo_con_icono():
+    global modo_actual, icono_modo
+    if modo_actual == modo_claro:
+        modo_actual = modo_oscuro
+        boton_modo.config(image=icono_sol)
+        icono_modo = icono_sol
+    else:
+        modo_actual = modo_claro
+        boton_modo.config(image=icono_luna)
+        icono_modo = icono_luna
+    aplicar_modo()
+
+
 
 def cargar_datos(event):
     global item_actual
@@ -319,6 +379,9 @@ height= ventana.winfo_screenheight()
 ventana.geometry("%dx%d" % (width, height))
 ventana.config(bg= "gray95")
 
+  # Arriba a la derecha
+
+
 fuente_lbprincipal = font.Font(family ="Helvetica", size = 14, weight="bold")
 
 tk.Label(ventana, text="MONUMENTOS DEL ESTADO DE CHIAPAS", background="#2C3E50", foreground="#ffffff", font= fuente_lbprincipal).pack()
@@ -328,6 +391,12 @@ image = tk.PhotoImage(file= "R.png")
 image = image.subsample(10,10)
 labelimagen = ttk.Label(ventana,image=image, background="gray95")
 labelimagen.place(x=10, y=10)
+icono_sol = tk.PhotoImage(file="sol.png")
+icono_luna = tk.PhotoImage(file="luna.png")
+icono_modo = icono_luna  # Comienza en modo claro
+boton_modo = tk.Button(ventana, image=icono_modo, bg="white", bd=0, command=lambda: alternar_modo_con_icono())
+boton_modo.place(relx=0.97, rely=0.01, anchor="ne")
+
 
 # Entradas
 # Crear un frame principal para organizar mejor los elementos
@@ -413,36 +482,43 @@ frame_botones = tk.Frame(ventana)
 frame_botones.pack(pady=10)
 frame_botones.config(bg="white", bd=5, relief="ridge")
 
+icon_buscar = tk.PhotoImage(file="buscar.png")
+icon_limpiar = tk.PhotoImage(file="limpiar.png")
+icon_guardar = tk.PhotoImage(file="guardar.png")
+icon_borrar = tk.PhotoImage(file="borrar.png")
+icon_actualizar = tk.PhotoImage(file="actualizar.png")
+icon_exportar = tk.PhotoImage(file="exportar.png")
+
 fuente_botones = font.Font(family ="Arial", size = 10, weight="bold")
 
-boton_buscar = tk.Button(frame_botones, text="Buscar", bg= "#F39C12", fg="white", command=buscar)
+boton_buscar = tk.Button(frame_botones, text="Buscar", image=icon_buscar, compound="left", bg= "#F39C12", fg="white", command=buscar)
 boton_buscar.grid(row=0, column=0, padx=10)
 boton_buscar.bind('<Enter>', lambda e: e.widget.config(bg="#D35400"))
 boton_buscar.bind('<Leave>', lambda e: e.widget.config(bg="#F39C12"))
 
 
-boton_borrar = tk.Button(frame_botones, text="Limpiar Datos", bg="gray70", fg="white", command=borrar)
+boton_borrar = tk.Button(frame_botones, text="Limpiar Datos", image=icon_limpiar, compound="left", bg="gray70", fg="white", command=borrar)
 boton_borrar.grid(row=0, column=4, padx=10)
 boton_borrar.bind('<Enter>', lambda e: e.widget.config(bg="gray60"))
 boton_borrar.bind('<Leave>', lambda e: e.widget.config(bg="gray70"))
 
 
-boton_guardar = tk.Button(frame_botones, text="Guardar Datos", bg="#27AE60", fg="white", command= guardar_valores)
+boton_guardar = tk.Button(frame_botones, text="Guardar Datos", image=icon_guardar, compound="left", bg="#27AE60", fg="white", command= guardar_valores)
 boton_guardar.grid(row=0, column=1, padx=10)
 boton_guardar.bind('<Enter>', lambda e: e.widget.config(bg="#219653"))
 boton_guardar.bind('<Leave>', lambda e: e.widget.config(bg="#27AE60"))
 
-boton_eliminarmonumento = tk.Button(frame_botones, text ="Borrar Monumento", bg="#E74C3C", fg="white", command=lambda: borrarRegistro(treeview))
+boton_eliminarmonumento = tk.Button(frame_botones, text ="Borrar Monumento", image=icon_borrar, compound="left", bg="#E74C3C", fg="white", command=lambda: borrarRegistro(treeview))
 boton_eliminarmonumento.grid(row=0, column=2, padx=10)
 boton_eliminarmonumento.bind('<Enter>', lambda e: e.widget.config(bg="#C0392B"))
 boton_eliminarmonumento.bind('<Leave>', lambda e: e.widget.config(bg="#E74C3C"))
 
-boton_actualizardatos = tk.Button(frame_botones, text = "Actualizar Datos", bg="#2980B9", fg="white", command= actualizar_datos)
+boton_actualizardatos = tk.Button(frame_botones, text = "Actualizar Datos", image=icon_actualizar, compound="left", bg="#2980B9", fg="white", command= actualizar_datos)
 boton_actualizardatos.grid(row=0, column=3, padx=10)
 boton_actualizardatos.bind('<Enter>', lambda e: e.widget.config(bg="#1A5276"))
 boton_actualizardatos.bind('<Leave>', lambda e: e.widget.config(bg="#2980B9"))
 
-boton_exportar = tk.Button(frame_botones, text="Exportar a Excel", bg="#8E44AD", fg="white", command=exportar_resultados)
+boton_exportar = tk.Button(frame_botones, text="Exportar a Excel", image=icon_exportar, compound="left", bg="#8E44AD", fg="white", command=exportar_resultados)
 boton_exportar.grid(row=0, column=5, padx=10)
 boton_exportar.bind('<Enter>', lambda e: e.widget.config(bg="#6C3483"))
 boton_exportar.bind('<Leave>', lambda e: e.widget.config(bg="#8E44AD"))
@@ -487,12 +563,10 @@ h_scrollbar.config(command=treeview.xview)
 
 #dar estilo al treeview
 style= ttk.Style()
-style.configure("Treeview", background="#3498DB", foreground="white", font= ("TkDefaultFont", 10))
-
 style.theme_use("clam")
-style.configure("Treeview.Heading", background="#3498DB", foreground="white", font=("TkDefaultFont", 10))
 style.map("Treeview", background=[('selected', 'darkblue')])
-style.map("Treeview.Heading", background=[('active', '#2980B9')])
+style.map("Treeview.Heading", background=[('active', "#3E637C")])
 
+aplicar_modo()
 
 ventana.mainloop()
