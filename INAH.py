@@ -210,15 +210,74 @@ def guardar_valores():
     if not municipio or not clave or not nombreedificio:
         messagebox.showwarning("Campos obligatorios", "Por favor llena al menos Municipio, Clave y Nombre del Edificio.")
         return
+    
+    if municipio and not municipio.isalpha():
+        messagebox.showwarning("Dato inválido", "El campo 'Municipio' debe ser una palabra")
+        return
+    
+    if clave and not clave.isdigit():
+        messagebox.showerror("Dato inválido", "El campo 'Clave' debe ser un número")
+        return
+    
+    if fichacatalogo and not fichacatalogo.isdigit():
+        messagebox.showerror("Dato inválido", "El campo 'Ficha Catálogo' debe ser un número")
+        return
 
     if seccion and not seccion.isdigit():
         messagebox.showerror("Dato inválido", "El campo 'Sección' debe ser un número.")
         return
+    
+    if manzana and not manzana.isdigit():
+        messagebox.showerror("Dato inválido", "El campo 'Manzana' debe ser un número")
+        return
+    
+    if numero and not numero.isdigit():
+        messagebox.showerror("Dato inválido", "El campo 'Número' debe ser un número")
+        return
+    
+    if nombreedificio and not nombreedificio.isalpha():
+        messagebox.showerror("Dato inválido", "El campo 'Nombre del edificio' debe ser una palabra")
 
+    if localizacion and not localizacion.isalpha():
+        messagebox.showerror("Dato inválido", "El campo 'Localización' debe ser una palabra")
+        return
+    
+    if barrio and not barrio.isalpha():
+        messagebox.showerror("Dato inválido", "El campo 'Barrio' debe ser una palabra")
+        return
+    
+    if siglo and not siglo.isalpha():
+        messagebox.showerror("Dato inválido", "El campo 'Siglo' debe ser una palabra")
+        return
+    
+    if catalogada and not catalogada.isalpha():
+        messagebox.showerror("Dato inválido", "El campo 'Catalogada' debe ser una palabra")
+        return
+    
+    if decretada and not decretada.isalpha():
+        messagebox.showerror("Dato inválido", "El campo 'Decretada' debe ser una palabra")
+        return
+    
+    if uso and not uso.isalpha():
+        messagebox.showerror("Datp inválido", "El campo 'Uso' debe ser una palabra")
+        return
+    
     if niveles and not niveles.isdigit():
         messagebox.showerror("Dato inválido", "El campo 'Niveles' debe ser un número.")
         return
-
+    
+    if material and not material.isalpha():
+        messagebox.showerror("Dato inválido", "El campo 'Material' debe ser una palabra")
+        return
+    
+    if cubierta and not cubierta.isalpha():
+        messagebox.showerror("Dato inválido", "El campo 'Cubierta' debe ser una palabra")
+        return
+    
+    if conservacion and not conservacion.isalpha():
+        messagebox.showerror("Dato inválido", "El campo 'Conservación' debe ser una palabra")
+        return
+    
     insertarRegistro(municipio,clave,fichacatalogo,seccion,manzana,numero,nombreedificio,localizacion,barrio,siglo,catalogada, decretada, uso, niveles, material, cubierta, conservacion)
 
     datos = f"""Municipio: {municipio}
