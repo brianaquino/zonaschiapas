@@ -154,15 +154,21 @@ def borrarRegistro(treeview):
     if not respuesta:
         return
     
-    selected_item = treeview.selection()[0]
-    uid = treeview.item(selected_item)['values'][0]
     conexion = mysql.connector.connect(host="localhost", user="root", password="root", database="Monumentos_01")
     cursor = conexion.cursor()
-    cursor.execute("DELETE FROM monumentos WHERE municipio = %s", (uid,))
-    conexion.commit()
-    treeview.delete(selected_item)
-    cursor.close()
-    conexion.close()
+    
+    try:
+        for item in treeview.selection():
+            uid = treeview.item(item)['values'][0] 
+    
+            cursor.execute("DELETE FROM monumentos WHERE municipio = %s", (uid,))
+            treeview.delete(item)
+        conexion.commit()
+    except Exception as e:
+        messagebox.showerror("Error", f"Ocurrió un error al eliminar: {e}")
+    finally:
+        cursor.close()
+        conexion.close()
     
 
 def insertarRegistro(municipio,clave,fichacatalogo,seccion,manzana,numero,nombreedificio,localizacion,barrio,siglo,catalogada, decretada, uso, niveles, material, cubierta, conservacion):
@@ -188,12 +194,13 @@ def insertarRegistro(municipio,clave,fichacatalogo,seccion,manzana,numero,nombre
         messagebox.showerror("Error", f"Error al insertar los datos: {err}")
 
 def guardar_valores():
+    # 1. Obtener todo como texto
     municipio = entrada_municipio.get().strip()
     clave = entrada_clave.get().strip()
     fichacatalogo = entrada_fichacatalogo.get().strip()
-    seccion = entrada_seccion.get().strip()
-    manzana = entrada_manzana.get().strip()
-    numero = entrada_numero.get().strip()
+    seccion_txt = entrada_seccion.get().strip()
+    manzana_txt = entrada_manzana.get().strip()
+    numero_txt = entrada_numero.get().strip()
     nombreedificio = entrada_nombreedificio.get().strip()
     localizacion = entrada_localizacion.get().strip()
     barrio = entrada_barrio.get().strip()
@@ -201,83 +208,87 @@ def guardar_valores():
     catalogada = entrada_catalogada.get().strip()
     decretada = entrada_decretada.get().strip()
     uso = entrada_uso.get().strip()
-    niveles = entrada_niveles.get().strip()
+    niveles_txt = entrada_niveles.get().strip()
     material = entrada_material.get().strip()
     cubierta = entrada_cubierta.get().strip()
     conservacion = entrada_conservacion.get().strip()
 
-    # Validaciones
+    # 2. Validaciones antes de convertir
     if not municipio or not clave or not nombreedificio:
         messagebox.showwarning("Campos obligatorios", "Por favor llena al menos Municipio, Clave y Nombre del Edificio.")
-        return
+        return False
     
-    if municipio and not municipio.isalpha():
+    if municipio.isdigit():
         messagebox.showwarning("Dato inválido", "El campo 'Municipio' debe ser una palabra")
-        return
-    
-    if clave and not clave.isdigit():
+        return False
+
+    if not clave.isdigit():
         messagebox.showerror("Dato inválido", "El campo 'Clave' debe ser un número")
-        return
-    
+        return False
+
     if fichacatalogo and not fichacatalogo.isdigit():
         messagebox.showerror("Dato inválido", "El campo 'Ficha Catálogo' debe ser un número")
-        return
+        return False
 
-    if seccion and not seccion.isdigit():
+    if seccion_txt and not seccion_txt.isdigit():
         messagebox.showerror("Dato inválido", "El campo 'Sección' debe ser un número.")
-        return
+        return False
     
-    if manzana and not manzana.isdigit():
+    if manzana_txt and not manzana_txt.isdigit():
         messagebox.showerror("Dato inválido", "El campo 'Manzana' debe ser un número")
-        return
-    
-    if numero and not numero.isdigit():
-        messagebox.showerror("Dato inválido", "El campo 'Número' debe ser un número")
-        return
-    
-    if nombreedificio and not nombreedificio.isalpha():
-        messagebox.showerror("Dato inválido", "El campo 'Nombre del edificio' debe ser una palabra")
+        return False
 
-    if localizacion and not localizacion.isalpha():
-        messagebox.showerror("Dato inválido", "El campo 'Localización' debe ser una palabra")
-        return
-    
-    if barrio and not barrio.isalpha():
-        messagebox.showerror("Dato inválido", "El campo 'Barrio' debe ser una palabra")
-        return
-    
+    if numero_txt and not numero_txt.isdigit():
+        messagebox.showerror("Dato inválido", "El campo 'Número' debe ser un número")
+        return False
+
+    if nombreedificio and nombreedificio.isdigit():
+        messagebox.showerror("Dato inválido", "El campo 'Nombre del edificio' debe ser una palabra")
+        return False
+
     if siglo and not siglo.isalpha():
         messagebox.showerror("Dato inválido", "El campo 'Siglo' debe ser una palabra")
-        return
+        return False
     
-    if catalogada and not catalogada.isalpha():
+    if catalogada and catalogada.isdigit():
         messagebox.showerror("Dato inválido", "El campo 'Catalogada' debe ser una palabra")
-        return
+        return False
     
-    if decretada and not decretada.isalpha():
+    if decretada and decretada.isdigit():
         messagebox.showerror("Dato inválido", "El campo 'Decretada' debe ser una palabra")
-        return
-    
-    if uso and not uso.isalpha():
-        messagebox.showerror("Datp inválido", "El campo 'Uso' debe ser una palabra")
-        return
-    
-    if niveles and not niveles.isdigit():
+        return False
+
+    if uso and uso.isdigit():
+        messagebox.showerror("Dato inválido", "El campo 'Uso' debe ser una palabra")
+        return False
+
+    if niveles_txt and not niveles_txt.isdigit():
         messagebox.showerror("Dato inválido", "El campo 'Niveles' debe ser un número.")
-        return
-    
-    if material and not material.isalpha():
+        return False
+
+    if material and material.isdigit():
         messagebox.showerror("Dato inválido", "El campo 'Material' debe ser una palabra")
-        return
+        return False
     
-    if cubierta and not cubierta.isalpha():
+    if cubierta and cubierta.isdigit():
         messagebox.showerror("Dato inválido", "El campo 'Cubierta' debe ser una palabra")
-        return
+        return False
     
-    if conservacion and not conservacion.isalpha():
+    if conservacion and conservacion.isdigit():
         messagebox.showerror("Dato inválido", "El campo 'Conservación' debe ser una palabra")
-        return
+        return False
     
+
+
+    # 3. Conversión segura
+    seccion = int(seccion_txt) if seccion_txt else None
+    manzana = int(manzana_txt) if manzana_txt else None
+    numero = int(numero_txt) if numero_txt else None
+    niveles = int(niveles_txt) if niveles_txt else None
+    fichacatalogo = int(fichacatalogo) if fichacatalogo else None
+    clave = int(clave)
+
+    # 4. Insertar
     insertarRegistro(municipio,clave,fichacatalogo,seccion,manzana,numero,nombreedificio,localizacion,barrio,siglo,catalogada, decretada, uso, niveles, material, cubierta, conservacion)
 
     datos = f"""Municipio: {municipio}
@@ -301,6 +312,7 @@ def guardar_valores():
     messagebox.showinfo("Información", "Datos guardados con éxito:\n\n" + datos)
     limpiar_campos()
     buscar()
+
 
 def limpiar_campos():
     entrada_municipio.delete(0, tk.END)
@@ -597,7 +609,6 @@ boton_exportar = tk.Button(frame_botones, text="Exportar a Excel", image=icon_ex
 boton_exportar.grid(row=0, column=5, padx=10)
 boton_exportar.bind('<Enter>', lambda e: e.widget.config(bg="#6C3483"))
 boton_exportar.bind('<Leave>', lambda e: e.widget.config(bg="#8E44AD"))
-
 
 # Frame para resultados (abajo)
 frame_resultados = tk.Frame(ventana)
