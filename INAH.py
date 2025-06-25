@@ -33,7 +33,7 @@ def aplicar_modo():
     frame_botones.config(bg=modo_actual["fondo"])
     etiqueta_contador.config(bg=modo_actual["fondo"], fg=modo_actual["texto"])
     labelimagen.config(background=modo_actual["fondo"])
-
+    creditos.config(bg=modo_actual["fondo"])
     # Labels
     for widget in frame_principal.winfo_children():
         if isinstance(widget, tk.Label):
@@ -388,12 +388,9 @@ def exportar_resultados():
 
 ventana = tk.Tk()
 ventana.title("Búsqueda de monumentos")
-
-width= ventana.winfo_screenwidth()               
-height= ventana.winfo_screenheight()               
-ventana.geometry("%dx%d" % (width, height))
 ventana.config(bg= "gray95")
-
+ventana.state('zoomed') 
+ventana.iconbitmap('inah_icon.ico')
   # Arriba a la derecha
 
 
@@ -491,6 +488,10 @@ entrada_cubierta.grid(row=1, column=5, padx=5, pady=2)
 tk.Label(frame_principal, text="Conservación:", font=fuente_label, foreground="gray30").grid(row=2, column=4, sticky="e", padx=5, pady=2)
 entrada_conservacion = tk.Entry(frame_principal)
 entrada_conservacion.grid(row=2, column=5, padx=5, pady=2)
+
+creditos = tk.Label(ventana, text="© Brian Aquino - 2025", font=("Arial", 8), fg="gray")
+creditos.pack(side="bottom", anchor="e", padx=5, pady=5)
+
 
 # Frame para botones
 frame_botones = tk.Frame(ventana)
