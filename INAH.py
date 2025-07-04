@@ -72,46 +72,46 @@ def cargar_datos(event):
     item_actual = treeview.focus()
     
     if item_actual:
-        valores = treeview.item(item_actual,'values')
-
-    entrada_municipio.delete(0, tk.END)
-    entrada_municipio.insert(0,valores[0])
-    entrada_clave.delete(0, tk.END)
-    entrada_clave.insert(0,valores[1])
-    entrada_fichacatalogo.delete(0, tk.END)
-    entrada_fichacatalogo.insert(0,valores[2])
-    entrada_seccion.delete(0, tk.END)
-    entrada_seccion.insert(0,valores[3])
-    entrada_manzana.delete(0, tk.END)
-    entrada_manzana.insert(0,valores[4])
-    entrada_numero.delete(0, tk.END)
-    entrada_numero.insert(0,valores[5])
-    entrada_nombreedificio.delete(0, tk.END)
-    entrada_nombreedificio.insert(0,valores[6])
-    entrada_localizacion.delete(0, tk.END)
-    entrada_localizacion.insert(0,valores[7])
-    entrada_barrio.delete(0, tk.END)
-    entrada_barrio.insert(0,valores[8])
-    entrada_siglo.delete(0,tk.END)
-    entrada_siglo.insert(0,valores[9])
-    entrada_catalogada.delete(0,tk.END)
-    entrada_catalogada.insert(0,valores[10])
-    entrada_decretada.delete(0,tk.END)
-    entrada_decretada.insert(0,valores[11])
-    entrada_uso.delete(0, tk.END)
-    entrada_uso.insert(0,valores[12])
-    entrada_niveles.delete(0,tk.END)
-    entrada_niveles.insert(0,valores[13])
-    entrada_material.delete(0,tk.END)
-    entrada_material.insert(0,valores[14])
-    entrada_cubierta.delete(0,tk.END)
-    entrada_cubierta.insert(0,valores[15])
-    entrada_conservacion.delete(0,tk.END)
-    entrada_conservacion.insert(0,valores[16])
+        valores = treeview.item(item_actual, 'values')
+        entrada_municipio.delete(0, tk.END)
+        entrada_municipio.insert(0, valores[0])
+        entrada_clave.delete(0, tk.END)
+        entrada_clave.insert(0, valores[1])
+        entrada_fichacatalogo.delete(0, tk.END)
+        entrada_fichacatalogo.insert(0, valores[2])
+        entrada_seccion.delete(0, tk.END)
+        entrada_seccion.insert(0, valores[3])
+        entrada_manzana.delete(0, tk.END)
+        entrada_manzana.insert(0, valores[4])
+        entrada_numero.delete(0, tk.END)
+        entrada_numero.insert(0, valores[5])
+        entrada_nombreedificio.delete(0, tk.END)
+        entrada_nombreedificio.insert(0, valores[6])
+        entrada_localizacion.delete(0, tk.END)
+        entrada_localizacion.insert(0, valores[7])
+        entrada_barrio.delete(0, tk.END)
+        entrada_barrio.insert(0, valores[8])
+        entrada_siglo.delete(0, tk.END)
+        entrada_siglo.insert(0, valores[9])
+        entrada_catalogada.delete(0, tk.END)
+        entrada_catalogada.insert(0, valores[10])
+        entrada_decretada.delete(0, tk.END)
+        entrada_decretada.insert(0, valores[11])
+        entrada_uso.delete(0, tk.END)
+        entrada_uso.insert(0, valores[12])
+        entrada_niveles.delete(0, tk.END)
+        entrada_niveles.insert(0, valores[13])
+        entrada_material.delete(0, tk.END)
+        entrada_material.insert(0, valores[14])
+        entrada_cubierta.delete(0, tk.END)
+        entrada_cubierta.insert(0, valores[15])
+        entrada_conservacion.delete(0, tk.END)
+        entrada_conservacion.insert(0, valores[16])
 
 def actualizar_datos():
-    item_actual = treeview.focus()
+    item_actual = treeview.focus()  # aquí obtienes el id_monumento porque es el iid
     if item_actual:
+        # No uses valores[0] para WHERE, usa item_actual
         valores = treeview.item(item_actual, 'values')
         nuevomunicipio = entrada_municipio.get()
         nuevoclave = entrada_clave.get()
@@ -129,20 +129,72 @@ def actualizar_datos():
         nuevoniveles = entrada_niveles.get()
         nuevomaterial = entrada_material.get()
         nuevocubierta = entrada_cubierta.get()
-        nuevoconservacion = entrada_conservacion.get()   
+        nuevoconservacion = entrada_conservacion.get()
 
-        conexion = mysql.connector.connect(host="localhost", user="root", password="root", database="Monumentos_01")
-        cursor = conexion.cursor()
-        cursor.execute("UPDATE monumentos SET municipio = %s, clave = %s, ficha_catalogo = %s, seccion = %s, manzana = %s, numero = %s, nombre_edificio = %s, localizacion = %s, barrio = %s, siglo_contruccion = %s, catalogada = %s, decretada = %s, uso_actual = %s, niveles = %s, material_construccion = %s, tipo_cubierta = %s, cons_carac_org = %s WHERE municipio = %s",
-               (nuevomunicipio, nuevoclave, nuevofichacatalogo, nuevoseccion, nuevomanzana, nuevonumero, nuevonombreedificio, nuevolocalizacion, nuevobarrio, nuevosiglo, nuevocatalogada, nuevodecretada, nuevouso, nuevoniveles, nuevomaterial, nuevocubierta, nuevoconservacion, valores[0]))
-        conexion.commit()
-        cursor.close()
-        conexion.close()
+        conexion = mysql.connector.connect(
+            host="localhost", user="root", password="root", database="monumentos_01"
+        )
 
-        treeview.item(item_actual, values=(nuevomunicipio, nuevoclave, nuevofichacatalogo, nuevoseccion, nuevomanzana, nuevonumero, nuevonombreedificio, nuevolocalizacion, nuevobarrio, nuevosiglo, nuevocatalogada, nuevodecretada, nuevouso, nuevoniveles, nuevomaterial, nuevocubierta, nuevoconservacion))
-        datos = "Municipio: "+ nuevomunicipio +"\n"+"Clave: " + nuevoclave +"\n"+"Ficha de Catálogo: " + nuevofichacatalogo +"\n"+"Sección: " + nuevoseccion +"\n"+"Manzana: " + nuevomanzana + "\n"+"Número: " + nuevonumero +"\n"+"Nombre del edificio: " + nuevonombreedificio+"\n"+"Localización: " + nuevolocalizacion +"\n"+"Barrio: " + nuevobarrio +"\n" +"Siglo: " + nuevosiglo +"\n" +"Catalogada: " + nuevocatalogada +"\n"+"Decretada: " + nuevodecretada +"\n" + "Uso: " + nuevouso +"\n" +"Niveles: " + nuevoniveles +"\n" +"Material: " + nuevomaterial +"\n" +"Cubierta: " + nuevocubierta +"\n" +"Conservación: " + nuevoconservacion +"\n"
-        messagebox.showinfo("Información", "¡Datos actualizados con éxito!" + "\n\n" + datos)
-    
+        try:
+            cursor1 = conexion.cursor()
+            cursor1.execute("""
+                UPDATE monumentos SET 
+                    municipio = %s, clave = %s, ficha_catalogo = %s, seccion = %s, manzana = %s, 
+                    numero = %s, nombre_edificio = %s, localizacion = %s, barrio = %s, 
+                    siglo_contruccion = %s, catalogada = %s, decretada = %s, uso_actual = %s, 
+                    niveles = %s, material_construccion = %s, tipo_cubierta = %s, cons_carac_org = %s 
+                WHERE id_monumento = %s
+            """, (
+                nuevomunicipio, nuevoclave, nuevofichacatalogo, nuevoseccion, nuevomanzana,
+                nuevonumero, nuevonombreedificio, nuevolocalizacion, nuevobarrio, nuevosiglo,
+                nuevocatalogada, nuevodecretada, nuevouso, nuevoniveles, nuevomaterial,
+                nuevocubierta, nuevoconservacion, item_actual
+            ))
+            conexion.commit()
+            cursor1.close()
+
+            # Obtener fecha_actu con el id
+            cursor2 = conexion.cursor(buffered=True)
+            cursor2.execute("SELECT fecha_actu FROM monumentos WHERE id_monumento = %s", (item_actual,))
+            resultado = cursor2.fetchone()
+            cursor2.close()
+
+            fecha_actu = resultado[0] if resultado else "Desconocida"
+
+            # Actualizar visualmente el Treeview
+            treeview.item(item_actual, values=(
+                nuevomunicipio, nuevoclave, nuevofichacatalogo, nuevoseccion, nuevomanzana,
+                nuevonumero, nuevonombreedificio, nuevolocalizacion, nuevobarrio, nuevosiglo,
+                nuevocatalogada, nuevodecretada, nuevouso, nuevoniveles, nuevomaterial,
+                nuevocubierta, nuevoconservacion, str(fecha_actu)
+            ))
+
+            datos = f"""Municipio: {nuevomunicipio}
+Clave: {nuevoclave}
+Ficha de Catálogo: {nuevofichacatalogo}
+Sección: {nuevoseccion}
+Manzana: {nuevomanzana}
+Número: {nuevonumero}
+Nombre del edificio: {nuevonombreedificio}
+Localización: {nuevolocalizacion}
+Barrio: {nuevobarrio}
+Siglo: {nuevosiglo}
+Catalogada: {nuevocatalogada}
+Decretada: {nuevodecretada}
+Uso: {nuevouso}
+Niveles: {nuevoniveles}
+Material: {nuevomaterial}
+Cubierta: {nuevocubierta}
+Conservación: {nuevoconservacion}
+Última actualización: {fecha_actu}
+"""
+            messagebox.showinfo("Información", "¡Datos actualizados con éxito!\n\n" + datos)
+
+        except Exception as e:
+            messagebox.showerror("Error", f"Ocurrió un error: {str(e)}")
+        finally:
+            conexion.close()
+
         
 
 def borrarRegistro(treeview):
@@ -154,14 +206,13 @@ def borrarRegistro(treeview):
     if not respuesta:
         return
     
-    conexion = mysql.connector.connect(host="localhost", user="root", password="root", database="Monumentos_01")
+    conexion = mysql.connector.connect(host="localhost", user="root", password="root", database="monumentos_01")
     cursor = conexion.cursor()
     
     try:
         for item in treeview.selection():
-            uid = treeview.item(item)['values'][0] 
-    
-            cursor.execute("DELETE FROM monumentos WHERE municipio = %s", (uid,))
+            # item es el iid, que es el id_monumento oculto
+            cursor.execute("DELETE FROM monumentos WHERE id_monumento = %s", (item,))
             treeview.delete(item)
         conexion.commit()
     except Exception as e:
@@ -169,6 +220,7 @@ def borrarRegistro(treeview):
     finally:
         cursor.close()
         conexion.close()
+
     
 
 def insertarRegistro(municipio,clave,fichacatalogo,seccion,manzana,numero,nombreedificio,localizacion,barrio,siglo,catalogada, decretada, uso, niveles, material, cubierta, conservacion):
@@ -176,8 +228,9 @@ def insertarRegistro(municipio,clave,fichacatalogo,seccion,manzana,numero,nombre
         conexion = mysql.connector.connect(
             host = "localhost",
             user = "root",
+            port = "3306",
             password = "root",
-            database = "Monumentos_01"
+            database = "monumentos_01"
             )
 
         cursor = conexion.cursor()
@@ -213,80 +266,30 @@ def guardar_valores():
     cubierta = entrada_cubierta.get().strip()
     conservacion = entrada_conservacion.get().strip()
 
-    # 2. Validaciones antes de convertir
+# Validaciones
     if not municipio or not clave or not nombreedificio:
-        messagebox.showwarning("Campos obligatorios", "Por favor llena al menos Municipio, Clave y Nombre del Edificio.")
+        messagebox.showwarning("Campos obligatorios", "Por favor llena Municipio, Clave y Nombre del Edificio.")
         return False
-    
-    if municipio.isdigit():
-        messagebox.showwarning("Dato inválido", "El campo 'Municipio' debe ser una palabra")
+
+    if len(municipio) > 100 or not all(c.isalpha() or c.isspace() or c in "-_" for c in municipio):
+        messagebox.showerror("Dato inválido", "El campo 'Municipio' debe ser una palabra de hasta 100 caracteres.")
         return False
 
     if not clave.isdigit():
-        messagebox.showerror("Dato inválido", "El campo 'Clave' debe ser un número")
+        messagebox.showerror("Dato inválido", "El campo 'Clave' debe ser un número.")
         return False
 
-    if fichacatalogo and not fichacatalogo.isdigit():
-        messagebox.showerror("Dato inválido", "El campo 'Ficha Catálogo' debe ser un número")
+    # Convertir valores
+    try:
+        clave = int(clave)
+        fichacatalogo = int(fichacatalogo) if fichacatalogo else None
+        seccion = int(seccion_txt) if seccion_txt else None
+        manzana = int(manzana_txt) if manzana_txt else None
+        numero = int(numero_txt) if numero_txt else None
+        niveles = int(niveles_txt) if niveles_txt else None
+    except ValueError:
+        messagebox.showerror("Dato inválido", "Los campos numéricos deben contener números válidos.")
         return False
-
-    if seccion_txt and not seccion_txt.isdigit():
-        messagebox.showerror("Dato inválido", "El campo 'Sección' debe ser un número.")
-        return False
-    
-    if manzana_txt and not manzana_txt.isdigit():
-        messagebox.showerror("Dato inválido", "El campo 'Manzana' debe ser un número")
-        return False
-
-    if numero_txt and not numero_txt.isdigit():
-        messagebox.showerror("Dato inválido", "El campo 'Número' debe ser un número")
-        return False
-
-    if nombreedificio and nombreedificio.isdigit():
-        messagebox.showerror("Dato inválido", "El campo 'Nombre del edificio' debe ser una palabra")
-        return False
-
-    if siglo and not siglo.isalpha():
-        messagebox.showerror("Dato inválido", "El campo 'Siglo' debe ser una palabra")
-        return False
-    
-    if catalogada and catalogada.isdigit():
-        messagebox.showerror("Dato inválido", "El campo 'Catalogada' debe ser una palabra")
-        return False
-    
-    if decretada and decretada.isdigit():
-        messagebox.showerror("Dato inválido", "El campo 'Decretada' debe ser una palabra")
-        return False
-
-    if uso and uso.isdigit():
-        messagebox.showerror("Dato inválido", "El campo 'Uso' debe ser una palabra")
-        return False
-
-    if niveles_txt and not niveles_txt.isdigit():
-        messagebox.showerror("Dato inválido", "El campo 'Niveles' debe ser un número.")
-        return False
-
-    if material and material.isdigit():
-        messagebox.showerror("Dato inválido", "El campo 'Material' debe ser una palabra")
-        return False
-    
-    if cubierta and cubierta.isdigit():
-        messagebox.showerror("Dato inválido", "El campo 'Cubierta' debe ser una palabra")
-        return False
-    
-    if conservacion and conservacion.isdigit():
-        messagebox.showerror("Dato inválido", "El campo 'Conservación' debe ser una palabra")
-        return False
-    
-
-
-    # 3. Conversión segura
-    seccion = int(seccion_txt) if seccion_txt else None
-    manzana = int(manzana_txt) if manzana_txt else None
-    numero = int(numero_txt) if numero_txt else None
-    niveles = int(niveles_txt) if niveles_txt else None
-    fichacatalogo = int(fichacatalogo) if fichacatalogo else None
-    clave = int(clave)
 
     # 4. Insertar
     insertarRegistro(municipio,clave,fichacatalogo,seccion,manzana,numero,nombreedificio,localizacion,barrio,siglo,catalogada, decretada, uso, niveles, material, cubierta, conservacion)
@@ -337,24 +340,24 @@ def borrar():
     limpiar_campos()
 
 def buscar():
-    campos={
-    "m.municipio" : entrada_municipio.get(),
-    "m.clave" : entrada_clave.get(),
-    "m.ficha_catalogo" : entrada_fichacatalogo.get(),
-    "m.seccion" : entrada_seccion.get(),
-    "m.manzana" : entrada_manzana.get(),
-    "m.numero" : entrada_numero.get(),
-    "m.nombre_edificio" : entrada_nombreedificio.get(),
-    "m.localizacion" : entrada_localizacion.get(),
-    "m.barrio" : entrada_barrio.get(),
-    "m.siglo_contruccion" : entrada_siglo.get(),
-    "m.catalogada" : entrada_catalogada.get(),
-    "m.decretada" : entrada_decretada.get(),
-    "m.uso_actual" : entrada_uso.get(),
-    "m.niveles" : entrada_niveles.get(),
-    "m.material_construccion" : entrada_material.get(),
-    "m.tipo_cubierta" : entrada_cubierta.get(),
-    "m.cons_carac_org" : entrada_conservacion.get()
+    campos = {
+        "m.municipio": entrada_municipio.get(),
+        "m.clave": entrada_clave.get(),
+        "m.ficha_catalogo": entrada_fichacatalogo.get(),
+        "m.seccion": entrada_seccion.get(),
+        "m.manzana": entrada_manzana.get(),
+        "m.numero": entrada_numero.get(),
+        "m.nombre_edificio": entrada_nombreedificio.get(),
+        "m.localizacion": entrada_localizacion.get(),
+        "m.barrio": entrada_barrio.get(),
+        "m.siglo_contruccion": entrada_siglo.get(),
+        "m.catalogada": entrada_catalogada.get(),
+        "m.decretada": entrada_decretada.get(),
+        "m.uso_actual": entrada_uso.get(),
+        "m.niveles": entrada_niveles.get(),
+        "m.material_construccion": entrada_material.get(),
+        "m.tipo_cubierta": entrada_cubierta.get(),
+        "m.cons_carac_org": entrada_conservacion.get()
     }
 
     try:
@@ -362,41 +365,45 @@ def buscar():
             host="localhost",
             user="root",
             password="root",
-            database="Monumentos_01"
+            database="monumentos_01"
         )
         cursor = conexion.cursor()
 
         consulta = """
-        SELECT m.municipio, m.clave, m.ficha_catalogo, m.seccion, m.manzana, m.numero, m.nombre_edificio, m.localizacion, m.barrio, m.siglo_contruccion, m.catalogada, m.decretada, m.uso_actual, m.niveles, m.material_construccion, m.tipo_cubierta, m.cons_carac_org
+        SELECT m.id_monumento, m.municipio, m.clave, m.ficha_catalogo, m.seccion, m.manzana, m.numero, m.nombre_edificio,
+               m.localizacion, m.barrio, m.siglo_contruccion, m.catalogada, m.decretada, m.uso_actual, m.niveles,
+               m.material_construccion, m.tipo_cubierta, m.cons_carac_org, m.fecha_actu
         FROM monumentos m 
         """
-    
+
         condiciones = []
         valores = []
 
         for campo_sql, valor in campos.items():
             if valor.strip() != "":
                 condiciones.append(f"{campo_sql}=%s")
-        
                 valores.append(valor.strip())
+
         if condiciones:
             consulta += " WHERE " + " AND ".join(condiciones)
-            
+
         cursor.execute(consulta, valores)
-        resultados_obtenidos = cursor.fetchall()    
+        resultados_obtenidos = cursor.fetchall()
 
         treeview.delete(*treeview.get_children())
 
         for fila in resultados_obtenidos:
-            treeview.insert("", "end", values=fila)
+            id_mon = fila[0]
+            valores_mostrar = fila[1:]  # todo menos id_monumento
+            treeview.insert("", "end", iid=str(id_mon), values=valores_mostrar)
 
         conexion.close()
         etiqueta_contador.config(text=f"Resultados encontrados: {len(resultados_obtenidos)}")
 
-
     except Exception as e:
         print("Error al conectar o ejecutar consulta:", e)
         etiqueta_contador.config(text="Resultados encontrados: 0")
+
 
 def mostrar_detalle(event):
     item = treeview.focus()
@@ -632,7 +639,7 @@ item_actual = None
 # TreeView
 columnas = ("Municipio", "Clave", "Ficha Catalogo", "Sección", "Manzana", "Número", "Nombre del Edificio",
             "Localización", "Barrio", "Siglo Construcción", "Catalogada", "Decretada",
-            "Uso Actual", "Niveles", "Material Construcción", "Tipo de cubierta", "Conservación")
+            "Uso Actual", "Niveles", "Material Construcción", "Tipo de cubierta", "Conservación", "Ultima actualización")
 
 treeview = ttk.Treeview(frame_resultados, columns=columnas, show="headings", yscrollcommand=scroll.set, xscrollcommand= h_scrollbar.set, selectmode="extended")
 for col in columnas:
