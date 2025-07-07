@@ -73,89 +73,83 @@ def cargar_datos(event):
     
     if item_actual:
         valores = treeview.item(item_actual, 'values')
-        entrada_municipio.delete(0, tk.END)
-        entrada_municipio.insert(0, valores[0])
+        entrada_identificador.delete(0, tk.END)
+        entrada_identificador.insert(0, valores[0])
         entrada_clave.delete(0, tk.END)
         entrada_clave.insert(0, valores[1])
-        entrada_fichacatalogo.delete(0, tk.END)
-        entrada_fichacatalogo.insert(0, valores[2])
-        entrada_seccion.delete(0, tk.END)
-        entrada_seccion.insert(0, valores[3])
-        entrada_manzana.delete(0, tk.END)
-        entrada_manzana.insert(0, valores[4])
-        entrada_numero.delete(0, tk.END)
-        entrada_numero.insert(0, valores[5])
-        entrada_nombreedificio.delete(0, tk.END)
-        entrada_nombreedificio.insert(0, valores[6])
-        entrada_localizacion.delete(0, tk.END)
-        entrada_localizacion.insert(0, valores[7])
-        entrada_barrio.delete(0, tk.END)
-        entrada_barrio.insert(0, valores[8])
-        entrada_siglo.delete(0, tk.END)
-        entrada_siglo.insert(0, valores[9])
-        entrada_catalogada.delete(0, tk.END)
-        entrada_catalogada.insert(0, valores[10])
-        entrada_decretada.delete(0, tk.END)
-        entrada_decretada.insert(0, valores[11])
-        entrada_uso.delete(0, tk.END)
-        entrada_uso.insert(0, valores[12])
-        entrada_niveles.delete(0, tk.END)
-        entrada_niveles.insert(0, valores[13])
-        entrada_material.delete(0, tk.END)
-        entrada_material.insert(0, valores[14])
-        entrada_cubierta.delete(0, tk.END)
-        entrada_cubierta.insert(0, valores[15])
-        entrada_conservacion.delete(0, tk.END)
-        entrada_conservacion.insert(0, valores[16])
+        entrada_folio.delete(0, tk.END)
+        entrada_folio.insert(0, valores[2])
+        entrada_nombre.delete(0, tk.END)
+        entrada_nombre.insert(0, valores[3])
+        entrada_municipio.delete(0, tk.END)
+        entrada_municipio.insert(0, valores[4])
+        entrada_estructuras.delete(0, tk.END)
+        entrada_estructuras.insert(0, valores[5])
+        entrada_concentracion.delete(0, tk.END)
+        entrada_concentracion.insert(0, valores[6])
+        entrada_concheros.delete(0, tk.END)
+        entrada_concheros.insert(0, valores[7])
+        entrada_manifestaciones.delete(0, tk.END)
+        entrada_manifestaciones.insert(0, valores[8])
+        entrada_paleontologico.delete(0, tk.END)
+        entrada_paleontologico.insert(0, valores[9])
+        entrada_yacimiento.delete(0, tk.END)
+        entrada_yacimiento.insert(0, valores[10])
+        entrada_utmestenad.delete(0, tk.END)
+        entrada_utmestenad.insert(0, valores[11])
+        entrada_utmnortenad.delete(0, tk.END)
+        entrada_utmnortenad.insert(0, valores[12])
+        entrada_utmestewgs.delete(0, tk.END)
+        entrada_utmestewgs.insert(0, valores[13])
+        entrada_utmnortewgs.delete(0, tk.END)
+        entrada_utmnortewgs.insert(0, valores[14])
+        
 
 def actualizar_datos():
     item_actual = treeview.focus()  # aquí obtienes el id_monumento porque es el iid
     if item_actual:
         # No uses valores[0] para WHERE, usa item_actual
         valores = treeview.item(item_actual, 'values')
-        nuevomunicipio = entrada_municipio.get()
+        nuevoidentificador = entrada_identificador.get()
         nuevoclave = entrada_clave.get()
-        nuevofichacatalogo = entrada_fichacatalogo.get()
-        nuevoseccion = entrada_seccion.get()
-        nuevomanzana = entrada_manzana.get()
-        nuevonumero = entrada_numero.get()
-        nuevonombreedificio = entrada_nombreedificio.get()
-        nuevolocalizacion = entrada_localizacion.get()
-        nuevobarrio = entrada_barrio.get()
-        nuevosiglo = entrada_siglo.get()
-        nuevocatalogada = entrada_catalogada.get()
-        nuevodecretada = entrada_decretada.get()
-        nuevouso = entrada_uso.get()
-        nuevoniveles = entrada_niveles.get()
-        nuevomaterial = entrada_material.get()
-        nuevocubierta = entrada_cubierta.get()
-        nuevoconservacion = entrada_conservacion.get()
-
+        nuevofolio = entrada_folio.get()
+        nuevonombre = entrada_nombre.get()
+        nuevomunicipio = entrada_municipio.get()
+        nuevoestructuras = entrada_estructuras.get()
+        nuevoconcentracion = entrada_concentracion.get()
+        nuevoconcheros = entrada_concheros.get()
+        nuevomanifestaciones = entrada_manifestaciones.get()
+        nuevopaleontologico = entrada_paleontologico.get()
+        nuevoyacimiento = entrada_yacimiento.get()
+        nuevoutmestenad = entrada_utmestenad.get()
+        nuevoutmnortenad = entrada_utmnortenad.get()
+        nuevoutmestewgs = entrada_utmestewgs.get()
+        nuevoutmnortewgs = entrada_utmnortewgs.get()
+        
         conexion = mysql.connector.connect(
-            host="localhost", user="root", password="root", database="monumentos_01"
+            host="localhost", user="root", password="root", database="zonas_01"
         )
 
         try:
             cursor1 = conexion.cursor()
             cursor1.execute("""
-                UPDATE monumentos SET 
-                    municipio = %s, clave = %s, ficha_catalogo = %s, seccion = %s, manzana = %s, 
-                    numero = %s, nombre_edificio = %s, localizacion = %s, barrio = %s, 
-                    siglo_contruccion = %s, catalogada = %s, decretada = %s, uso_actual = %s, 
-                    niveles = %s, material_construccion = %s, tipo_cubierta = %s, cons_carac_org = %s 
-                WHERE id_monumento = %s
+                UPDATE zonas SET 
+                    identificador = %s, clave = %s, folio_real = %s, nombre = %s, municipio = %s, 
+                    estructura = %s, concentracion = %s, concheros = %s, manifestaciones = %s, 
+                    paleontologico = %s, yacimiento = %s, UTM_ESTE_NAD27 = %s,  UTM_NORTE_NAD27 = %s, 
+                    UTM_ESTE_WGS84 = %s, UTM_NORTE_WGS84 = %s
+                WHERE identificador = %s
             """, (
-                nuevomunicipio, nuevoclave, nuevofichacatalogo, nuevoseccion, nuevomanzana,
-                nuevonumero, nuevonombreedificio, nuevolocalizacion, nuevobarrio, nuevosiglo,
-                nuevocatalogada, nuevodecretada, nuevouso, nuevoniveles, nuevomaterial,
-                nuevocubierta, nuevoconservacion, item_actual
+                nuevoidentificador, nuevoclave, nuevofolio, nuevonombre, nuevomunicipio,
+                nuevoestructuras, nuevoconcentracion, nuevoconcheros, nuevomanifestaciones, nuevopaleontologico,
+                nuevoyacimiento, nuevoutmestenad, nuevoutmnortenad, nuevoutmestewgs, nuevoutmnortewgs, item_actual
             ))
             conexion.commit()
             cursor1.close()
 
             # Obtener fecha_actu con el id
             cursor2 = conexion.cursor(buffered=True)
-            cursor2.execute("SELECT fecha_actu FROM monumentos WHERE id_monumento = %s", (item_actual,))
+            cursor2.execute("SELECT fecha_actu FROM monumentos WHERE id_identificador = %s", (item_actual,))
             resultado = cursor2.fetchone()
             cursor2.close()
 
@@ -163,29 +157,26 @@ def actualizar_datos():
 
             # Actualizar visualmente el Treeview
             treeview.item(item_actual, values=(
-                nuevomunicipio, nuevoclave, nuevofichacatalogo, nuevoseccion, nuevomanzana,
-                nuevonumero, nuevonombreedificio, nuevolocalizacion, nuevobarrio, nuevosiglo,
-                nuevocatalogada, nuevodecretada, nuevouso, nuevoniveles, nuevomaterial,
-                nuevocubierta, nuevoconservacion, str(fecha_actu)
+                nuevoidentificador, nuevoclave, nuevofolio, nuevonombre, nuevomunicipio,
+                nuevoestructuras, nuevoconcentracion, nuevoconcheros, nuevomanifestaciones, nuevopaleontologico,
+                nuevoyacimiento, nuevoutmestenad, nuevoutmnortenad, nuevoutmestewgs, nuevoutmnortewgs, str(fecha_actu)
             ))
 
-            datos = f"""Municipio: {nuevomunicipio}
-Clave: {nuevoclave}
-Ficha de Catálogo: {nuevofichacatalogo}
-Sección: {nuevoseccion}
-Manzana: {nuevomanzana}
-Número: {nuevonumero}
-Nombre del edificio: {nuevonombreedificio}
-Localización: {nuevolocalizacion}
-Barrio: {nuevobarrio}
-Siglo: {nuevosiglo}
-Catalogada: {nuevocatalogada}
-Decretada: {nuevodecretada}
-Uso: {nuevouso}
-Niveles: {nuevoniveles}
-Material: {nuevomaterial}
-Cubierta: {nuevocubierta}
-Conservación: {nuevoconservacion}
+            datos = f"""Identificador: {nuevoidentificador}
+Clave del Sitio: {nuevoclave}
+Folio Real: {nuevofolio}
+Nombre: {nuevonombre}
+Municipio: {nuevomunicipio}
+Estructuras: {nuevoestructuras}
+Concentración de Materiales: {nuevoconcentracion}
+Concheros: {nuevoconcheros}
+Manifestaciones Gráfico-Rupestres: {nuevomanifestaciones}
+Paleontológico: {nuevopaleontologico}
+Yacimiento de Materias Primas: {nuevoyacimiento}
+UTM ESTE NAD 27: {nuevoutmestenad}
+UTM NORTE NAD 27: {nuevoutmnortenad}
+UTM ESTE WGS 84: {nuevoutmestewgs}
+UTM NORTE WGS 84: {nuevoutmnortewgs}
 Última actualización: {fecha_actu}
 """
             messagebox.showinfo("Información", "¡Datos actualizados con éxito!\n\n" + datos)
@@ -206,13 +197,13 @@ def borrarRegistro(treeview):
     if not respuesta:
         return
     
-    conexion = mysql.connector.connect(host="localhost", user="root", password="root", database="monumentos_01")
+    conexion = mysql.connector.connect(host="localhost", user="root", password="root", database="zonas_01")
     cursor = conexion.cursor()
     
     try:
         for item in treeview.selection():
             # item es el iid, que es el id_monumento oculto
-            cursor.execute("DELETE FROM monumentos WHERE id_monumento = %s", (item,))
+            cursor.execute("DELETE FROM monumentos WHERE identificador = %s", (item,))
             treeview.delete(item)
         conexion.commit()
     except Exception as e:
@@ -223,20 +214,20 @@ def borrarRegistro(treeview):
 
     
 
-def insertarRegistro(municipio,clave,fichacatalogo,seccion,manzana,numero,nombreedificio,localizacion,barrio,siglo,catalogada, decretada, uso, niveles, material, cubierta, conservacion):
+def insertarRegistro(identificador,clave,folio,nombre,municipio,estructuras,concentracion,concheros,manifestaciones,paleontologico,yacimiento, utmestenad, utmnortenad, utmestewgs, utmnortewgs):
     try: 
         conexion = mysql.connector.connect(
             host = "localhost",
             user = "root",
             port = "3306",
             password = "root",
-            database = "monumentos_01"
+            database = "zonas_01"
             )
 
         cursor = conexion.cursor()
     #crear el query
-        query  = "INSERT INTO monumentos (municipio, clave, ficha_catalogo, seccion, manzana, numero, nombre_edificio, localizacion, barrio, siglo_contruccion, catalogada, decretada, uso_actual, niveles, material_construccion, tipo_cubierta, cons_carac_org)" + "VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s, %s, %s, %s, %s, %s)"
-        valores = (municipio, clave, fichacatalogo, seccion, manzana, numero, nombreedificio, localizacion, barrio, siglo, catalogada, decretada, uso, niveles, material, cubierta, conservacion)
+        query  = "INSERT INTO zonas (identificador, clave, folio_real, nombre, municipio, estructura, concentracion, concheros, manifestaciones, paleontologico, yacimiento, UTM_ESTE_NAD27,  UTM_NORTE_NAD27, UTM_ESTE_WGS84, UTM_NORTE_WGS84)" + "VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s, %s, %s, %s)"
+        valores = (identificador,clave,folio,nombre,municipio,estructuras,concentracion,concheros,manifestaciones,paleontologico,yacimiento, utmestenad, utmnortenad, utmestewgs, utmnortewgs)
     #ejecucion del query
         cursor.execute(query, valores)
         conexion.commit()
@@ -248,116 +239,109 @@ def insertarRegistro(municipio,clave,fichacatalogo,seccion,manzana,numero,nombre
 
 def guardar_valores():
     # 1. Obtener todo como texto
-    municipio = entrada_municipio.get().strip()
+    identificador = entrada_identificador.get().strip()
     clave = entrada_clave.get().strip()
-    fichacatalogo = entrada_fichacatalogo.get().strip()
-    seccion_txt = entrada_seccion.get().strip()
-    manzana_txt = entrada_manzana.get().strip()
-    numero_txt = entrada_numero.get().strip()
-    nombreedificio = entrada_nombreedificio.get().strip()
-    localizacion = entrada_localizacion.get().strip()
-    barrio = entrada_barrio.get().strip()
-    siglo = entrada_siglo.get().strip()
-    catalogada = entrada_catalogada.get().strip()
-    decretada = entrada_decretada.get().strip()
-    uso = entrada_uso.get().strip()
-    niveles_txt = entrada_niveles.get().strip()
-    material = entrada_material.get().strip()
-    cubierta = entrada_cubierta.get().strip()
-    conservacion = entrada_conservacion.get().strip()
+    folio = entrada_folio.get().strip()
+    nombre = entrada_nombre.get().strip()
+    municipio = entrada_municipio.get().strip()
+    estructuras = entrada_estructuras.get().strip()
+    concentracion = entrada_concentracion.get().strip()
+    concheros = entrada_concheros.get().strip()
+    manifestaciones = entrada_manifestaciones.get().strip()
+    paleontologico = entrada_paleontologico.get().strip()
+    yacimiento = entrada_yacimiento.get().strip()
+    utmestenad = entrada_utmestenad.get().strip()
+    utmnortenad = entrada_utmnortenad.get().strip()
+    utmestewgs = entrada_utmestewgs.get().strip()
+    utmnortewgs = entrada_utmnortewgs.get().strip()
 
-# Validaciones
-    if not municipio or not clave or not nombreedificio:
-        messagebox.showwarning("Campos obligatorios", "Por favor llena Municipio, Clave y Nombre del Edificio.")
+    # Validaciones
+    if not municipio or not clave or not nombre:
+        messagebox.showwarning("Campos obligatorios", "Por favor llena Municipio, Clave y Nombre.")
         return False
 
     if len(municipio) > 100 or not all(c.isalpha() or c.isspace() or c in "-_" for c in municipio):
-        messagebox.showerror("Dato inválido", "El campo 'Municipio' debe ser una palabra de hasta 100 caracteres.")
+        messagebox.showerror("Dato inválido", "El campo 'Municipio' debe tener solo letras y hasta 100 caracteres.")
         return False
 
     if not clave.isdigit():
         messagebox.showerror("Dato inválido", "El campo 'Clave' debe ser un número.")
         return False
 
-    # Convertir valores
+    # Convertir valores numéricos necesarios
     try:
         clave = int(clave)
-        fichacatalogo = int(fichacatalogo) if fichacatalogo else None
-        seccion = int(seccion_txt) if seccion_txt else None
-        manzana = int(manzana_txt) if manzana_txt else None
-        numero = int(numero_txt) if numero_txt else None
-        niveles = int(niveles_txt) if niveles_txt else None
+        identificador = int(identificador) if identificador else None
     except ValueError:
         messagebox.showerror("Dato inválido", "Los campos numéricos deben contener números válidos.")
         return False
 
     # 4. Insertar
-    insertarRegistro(municipio,clave,fichacatalogo,seccion,manzana,numero,nombreedificio,localizacion,barrio,siglo,catalogada, decretada, uso, niveles, material, cubierta, conservacion)
+    insertarRegistro(
+        identificador, clave, folio, nombre, municipio,
+        estructuras, concentracion, concheros, manifestaciones,
+        paleontologico, yacimiento, utmestenad, utmnortenad,
+        utmestewgs, utmnortewgs
+    )
 
-    datos = f"""Municipio: {municipio}
-                Clave: {clave}
-                Ficha de Catálogo: {fichacatalogo}
-                Sección: {seccion}
-                Manzana: {manzana}
-                Número: {numero}
-                Nombre del edificio: {nombreedificio}
-                Localización: {localizacion}
-                Barrio: {barrio}
-                Siglo: {siglo}
-                Catalogada: {catalogada}
-                Decretada: {decretada}
-                Uso: {uso}
-                Niveles: {niveles}
-                Material: {material}
-                Cubierta: {cubierta}
-                Conservación: {conservacion}"""
+    datos = f"""Clave del Sitio: {clave}
+Folio Real: {folio}
+Nombre: {nombre}
+Municipio: {municipio}
+Estructuras: {estructuras}
+Concentración de Materiales: {concentracion}
+Concheros: {concheros}
+Manifestaciones Gráfico-Rupestres: {manifestaciones}
+Paleontológico: {paleontologico}
+Yacimiento de Materias Primas: {yacimiento}
+UTM ESTE NAD 27: {utmestenad}
+UTM NORTE NAD 27: {utmnortenad}
+UTM ESTE WGS 84: {utmestewgs}
+UTM NORTE WGS 84: {utmnortewgs}"""
 
     messagebox.showinfo("Información", "Datos guardados con éxito:\n\n" + datos)
     limpiar_campos()
     buscar()
 
 
+
 def limpiar_campos():
-    entrada_municipio.delete(0, tk.END)
+    entrada_identificador.delete(0, tk.END)
     entrada_clave.delete(0, tk.END)
-    entrada_fichacatalogo.delete(0, tk.END)
-    entrada_seccion.delete(0, tk.END)
-    entrada_manzana.delete(0, tk.END)
-    entrada_numero.delete(0, tk.END)
-    entrada_nombreedificio.delete(0, tk.END)
-    entrada_localizacion.delete(0, tk.END)
-    entrada_barrio.delete(0, tk.END)
-    entrada_siglo.delete(0,tk.END)
-    entrada_catalogada.delete(0,tk.END)
-    entrada_decretada.delete(0,tk.END)
-    entrada_uso.delete(0, tk.END)
-    entrada_niveles.delete(0,tk.END)
-    entrada_material.delete(0,tk.END)
-    entrada_cubierta.delete(0,tk.END)
-    entrada_conservacion.delete(0,tk.END)
+    entrada_folio.delete(0, tk.END)
+    entrada_nombre.delete(0, tk.END)
+    entrada_municipio.delete(0, tk.END)
+    entrada_estructuras.delete(0, tk.END)
+    entrada_concentracion.delete(0, tk.END)
+    entrada_concheros.delete(0, tk.END)
+    entrada_manifestaciones.delete(0, tk.END)
+    entrada_paleontologico.delete(0,tk.END)
+    entrada_yacimiento.delete(0,tk.END)
+    entrada_utmestenad.delete(0,tk.END)
+    entrada_utmnortenad.delete(0, tk.END)
+    entrada_utmestewgs.delete(0,tk.END)
+    entrada_utmnortewgs.delete(0,tk.END)
 
 def borrar():
     limpiar_campos()
 
 def buscar():
     campos = {
-        "m.municipio": entrada_municipio.get(),
-        "m.clave": entrada_clave.get(),
-        "m.ficha_catalogo": entrada_fichacatalogo.get(),
-        "m.seccion": entrada_seccion.get(),
-        "m.manzana": entrada_manzana.get(),
-        "m.numero": entrada_numero.get(),
-        "m.nombre_edificio": entrada_nombreedificio.get(),
-        "m.localizacion": entrada_localizacion.get(),
-        "m.barrio": entrada_barrio.get(),
-        "m.siglo_contruccion": entrada_siglo.get(),
-        "m.catalogada": entrada_catalogada.get(),
-        "m.decretada": entrada_decretada.get(),
-        "m.uso_actual": entrada_uso.get(),
-        "m.niveles": entrada_niveles.get(),
-        "m.material_construccion": entrada_material.get(),
-        "m.tipo_cubierta": entrada_cubierta.get(),
-        "m.cons_carac_org": entrada_conservacion.get()
+        "z.identificador": entrada_identificador.get(),
+        "z.clave": entrada_clave.get(),
+        "z.folio_real": entrada_folio.get(),
+        "z.nombre": entrada_nombre.get(),
+        "z.municipio": entrada_municipio.get(),
+        "z.estructura": entrada_estructuras.get(),
+        "z.concentracion": entrada_concentracion.get(),
+        "z.concheros": entrada_concheros.get(),
+        "z.manifestaciones": entrada_manifestaciones.get(),
+        "z.paleontologico": entrada_paleontologico.get(),
+        "z.yacimiento": entrada_yacimiento.get(),
+        "z.UTM_ESTE_NAD27": entrada_utmestenad.get(),
+        "z.UTM_NORTE_NAD27": entrada_utmnortenad.get(),
+        "z.UTM_ESTE_WGS84": entrada_utmestewgs.get(),
+        "z.UTM_NORTE_WGS84": entrada_utmnortewgs.get()
     }
 
     try:
@@ -365,16 +349,17 @@ def buscar():
             host="localhost",
             user="root",
             password="root",
-            database="monumentos_01"
+            database="zonas_01"
         )
         cursor = conexion.cursor()
 
         consulta = """
-        SELECT m.id_monumento, m.municipio, m.clave, m.ficha_catalogo, m.seccion, m.manzana, m.numero, m.nombre_edificio,
-               m.localizacion, m.barrio, m.siglo_contruccion, m.catalogada, m.decretada, m.uso_actual, m.niveles,
-               m.material_construccion, m.tipo_cubierta, m.cons_carac_org, m.fecha_actu
-        FROM monumentos m 
+        SELECT z.identificador, z.clave, z.folio_real, z.nombre, z.municipio, z.estructura, 
+               z.concentracion, z.concheros, z.manifestaciones, z.paleontologico, z.yacimiento, 
+               z.UTM_ESTE_NAD27, z.UTM_NORTE_NAD27, z.UTM_ESTE_WGS84, z.UTM_NORTE_WGS84, z.fecha_actu
+        FROM zonas z
         """
+
 
         condiciones = []
         valores = []
@@ -394,7 +379,7 @@ def buscar():
 
         for fila in resultados_obtenidos:
             id_mon = fila[0]
-            valores_mostrar = fila[1:]  # todo menos id_monumento
+            valores_mostrar = fila[0:]  # todo menos id_monumento
             treeview.insert("", "end", iid=str(id_mon), values=valores_mostrar)
 
         conexion.close()
@@ -417,7 +402,7 @@ def mostrar_detalle(event):
     for i in range(len(columnas)):
         detalles += f"{columnas[i]}: {valores[i]}\n"
 
-    messagebox.showinfo("Detalles del Monumento", detalles)
+    messagebox.showinfo("Detalles de la zona", detalles)
 
 
 def exportar_resultados():
@@ -465,7 +450,7 @@ def exportar_resultados():
 # INTERFAZ
 
 ventana = tk.Tk()
-ventana.title("Búsqueda de monumentos")
+ventana.title("Búsqueda de Zonas Arqueológicas")
 ventana.config(bg= "gray95")
 ventana.state('zoomed') 
 ventana.iconbitmap('inah_icon.ico')
@@ -474,7 +459,7 @@ ventana.iconbitmap('inah_icon.ico')
 
 fuente_lbprincipal = font.Font(family ="Helvetica", size = 14, weight="bold")
 
-tk.Label(ventana, text="MONUMENTOS DEL ESTADO DE CHIAPAS", background="#2C3E50", foreground="#ffffff", font= fuente_lbprincipal).pack()
+tk.Label(ventana, text=" ZONAS ARQUEOLÓGICAS DE CHIAPAS", background="#2C3E50", foreground="#ffffff", font= fuente_lbprincipal).pack()
 
 #imagen - logo INAH
 image = tk.PhotoImage(file= "R.png")
@@ -496,76 +481,69 @@ frame_principal.config(bg="white", bd=5, relief="ridge")
 
 fuente_label = font.Font(family="Segoe UI", size= 10, underline=0)
 # Primera columna (0)
-tk.Label(frame_principal, text="Municipio:", font=fuente_label, foreground="gray30").grid(row=0, column=0, sticky="e", padx=5, pady=2)
-entrada_municipio = tk.Entry(frame_principal)
-entrada_municipio.grid(row=0, column=1, padx=5, pady=2)
+tk.Label(frame_principal, text="Identificador:", font=fuente_label, foreground="gray30").grid(row=0, column=0, sticky="e", padx=5, pady=2)
+entrada_identificador = tk.Entry(frame_principal)
+entrada_identificador.grid(row=0, column=1, padx=5, pady=2)
 
 
-tk.Label(frame_principal, text="Clave:", font=fuente_label, foreground="gray30").grid(row=1, column=0, sticky="e", padx=5, pady=2)
+tk.Label(frame_principal, text="Clave del Sitio:", font=fuente_label, foreground="gray30").grid(row=1, column=0, sticky="e", padx=5, pady=2)
 entrada_clave = tk.Entry(frame_principal)
 entrada_clave.grid(row=1, column=1, padx=5, pady=2)
 
-tk.Label(frame_principal, text="Ficha Catálogo:", font=fuente_label, foreground="gray30").grid(row=2, column=0, sticky="e", padx=5, pady=2)
-entrada_fichacatalogo = tk.Entry(frame_principal)
-entrada_fichacatalogo.grid(row=2, column=1, padx=5, pady=2)
+tk.Label(frame_principal, text="Folio Real:", font=fuente_label, foreground="gray30").grid(row=2, column=0, sticky="e", padx=5, pady=2)
+entrada_folio = tk.Entry(frame_principal)
+entrada_folio.grid(row=2, column=1, padx=5, pady=2)
 
-tk.Label(frame_principal, text="Sección:", font= fuente_label, foreground="gray30").grid(row=3, column=0, sticky="e", padx=5, pady=2)
-entrada_seccion = tk.Entry(frame_principal)
-entrada_seccion.grid(row=3, column=1, padx=5, pady=2)
+tk.Label(frame_principal, text="Nombre:", font= fuente_label, foreground="gray30").grid(row=3, column=0, sticky="e", padx=5, pady=2)
+entrada_nombre = tk.Entry(frame_principal)
+entrada_nombre.grid(row=3, column=1, padx=5, pady=2)
 
-tk.Label(frame_principal, text="Manzana:", font= fuente_label, foreground="gray30").grid(row=4, column=0, sticky="e", padx=5, pady=2)
-entrada_manzana = tk.Entry(frame_principal)
-entrada_manzana.grid(row=4, column=1, padx=5, pady=2)
+tk.Label(frame_principal, text="Municipio:", font= fuente_label, foreground="gray30").grid(row=4, column=0, sticky="e", padx=5, pady=2)
+entrada_municipio = tk.Entry(frame_principal)
+entrada_municipio.grid(row=4, column=1, padx=5, pady=2)
 
-tk.Label(frame_principal, text="Número:", font= fuente_label, foreground="gray30").grid(row=5, column=0, sticky="e", padx=5, pady=2)
-entrada_numero = tk.Entry(frame_principal)
-entrada_numero.grid(row=5, column=1, padx=5, pady=2)
+tk.Label(frame_principal, text="Estructuras:", font= fuente_label, foreground="gray30").grid(row=5, column=0, sticky="e", padx=5, pady=2)
+entrada_estructuras = tk.Entry(frame_principal)
+entrada_estructuras.grid(row=5, column=1, padx=5, pady=2)
 
-tk.Label(frame_principal, text="Nombre del Edificio:", font= fuente_label, foreground="gray30").grid(row=6, column=0, sticky="e", padx=5, pady=2)
-entrada_nombreedificio = tk.Entry(frame_principal)
-entrada_nombreedificio.grid(row=6, column=1, padx=5, pady=2)
+tk.Label(frame_principal, text="Concentración de Materiales:", font= fuente_label, foreground="gray30").grid(row=6, column=0, sticky="e", padx=5, pady=2)
+entrada_concentracion = tk.Entry(frame_principal)
+entrada_concentracion.grid(row=6, column=1, padx=5, pady=2)
 
 # Segunda columna (2)
-tk.Label(frame_principal, text="Localización:", font= fuente_label, foreground="gray30").grid(row=0, column=2, sticky="e", padx=5, pady=2)
-entrada_localizacion = tk.Entry(frame_principal)
-entrada_localizacion.grid(row=0, column=3, padx=5, pady=2)
+tk.Label(frame_principal, text="Concheros:", font= fuente_label, foreground="gray30").grid(row=0, column=2, sticky="e", padx=5, pady=2)
+entrada_concheros = tk.Entry(frame_principal)
+entrada_concheros.grid(row=0, column=3, padx=5, pady=2)
 
-tk.Label(frame_principal, text="Barrio:", font=fuente_label, foreground="gray30").grid(row=1, column=2, sticky="e", padx=5, pady=2)
-entrada_barrio = tk.Entry(frame_principal)
-entrada_barrio.grid(row=1, column=3, padx=5, pady=2)
+tk.Label(frame_principal, text="Manifestaciones Gráfico-Rupestres:", font=fuente_label, foreground="gray30").grid(row=1, column=2, sticky="e", padx=5, pady=2)
+entrada_manifestaciones = tk.Entry(frame_principal)
+entrada_manifestaciones.grid(row=1, column=3, padx=5, pady=2)
 
-tk.Label(frame_principal, text="Siglo de Construcción:", font=fuente_label, foreground="gray30").grid(row=2, column=2, sticky="e", padx=5, pady=2)
-entrada_siglo = tk.Entry(frame_principal)
-entrada_siglo.grid(row=2, column=3, padx=5, pady=2)
+tk.Label(frame_principal, text="Paleontológico:", font=fuente_label, foreground="gray30").grid(row=2, column=2, sticky="e", padx=5, pady=2)
+entrada_paleontologico = tk.Entry(frame_principal)
+entrada_paleontologico.grid(row=2, column=3, padx=5, pady=2)
 
-tk.Label(frame_principal, text="Catalogada:", font=fuente_label, foreground="gray30").grid(row=3, column=2, sticky="e", padx=5, pady=2)
-entrada_catalogada = tk.Entry(frame_principal)
-entrada_catalogada.grid(row=3, column=3, padx=5, pady=2)
+tk.Label(frame_principal, text="Yacimiento de Materias Primas:", font=fuente_label, foreground="gray30").grid(row=3, column=2, sticky="e", padx=5, pady=2)
+entrada_yacimiento = tk.Entry(frame_principal)
+entrada_yacimiento.grid(row=3, column=3, padx=5, pady=2)
 
-tk.Label(frame_principal, text="Decretada:", font=fuente_label, foreground="gray30").grid(row=4, column=2, sticky="e", padx=5, pady=2)
-entrada_decretada = tk.Entry(frame_principal)
-entrada_decretada.grid(row=4, column=3, padx=5, pady=2)
+tk.Label(frame_principal, text="UTM ESTE NAD 27:", font=fuente_label, foreground="gray30").grid(row=4, column=2, sticky="e", padx=5, pady=2)
+entrada_utmestenad = tk.Entry(frame_principal)
+entrada_utmestenad.grid(row=4, column=3, padx=5, pady=2)
 
-tk.Label(frame_principal, text="Uso Actual:", font=fuente_label, foreground="gray30").grid(row=5, column=2, sticky="e", padx=5, pady=2)
-entrada_uso = tk.Entry(frame_principal)
-entrada_uso.grid(row=5, column=3, padx=5, pady=2)
+tk.Label(frame_principal, text="UTM NORTE NAD 27:", font=fuente_label, foreground="gray30").grid(row=5, column=2, sticky="e", padx=5, pady=2)
+entrada_utmnortenad = tk.Entry(frame_principal)
+entrada_utmnortenad.grid(row=5, column=3, padx=5, pady=2)
 
-tk.Label(frame_principal, text="Niveles:", font=fuente_label, foreground="gray30").grid(row=6, column=2, sticky="e", padx=5, pady=2)
-entrada_niveles = tk.Entry(frame_principal)
-entrada_niveles.grid(row=6, column=3, padx=5, pady=2)
+tk.Label(frame_principal, text="UTM ESTE WGS 84:", font=fuente_label, foreground="gray30").grid(row=6, column=2, sticky="e", padx=5, pady=2)
+entrada_utmestewgs = tk.Entry(frame_principal)
+entrada_utmestewgs.grid(row=6, column=3, padx=5, pady=2)
 
 # Tercera columna (4)
-tk.Label(frame_principal, text="Material de Construcción:", font=fuente_label, foreground="gray30").grid(row=0, column=4, sticky="e", padx=5, pady=2)
-entrada_material = tk.Entry(frame_principal)
-entrada_material.grid(row=0, column=5, padx=5, pady=2)
+tk.Label(frame_principal, text="UTM NORTE WGS 84:", font=fuente_label, foreground="gray30").grid(row=0, column=4, sticky="e", padx=5, pady=2)
+entrada_utmnortewgs = tk.Entry(frame_principal)
+entrada_utmnortewgs.grid(row=0, column=5, padx=5, pady=2)
 
-tk.Label(frame_principal, text="Tipo de Cubierta:", font=fuente_label, foreground="gray30").grid(row=1, column=4, sticky="e", padx=5, pady=2)
-entrada_cubierta = tk.Entry(frame_principal)
-entrada_cubierta.grid(row=1, column=5, padx=5, pady=2)
-
-tk.Label(frame_principal, text="Conservación:", font=fuente_label, foreground="gray30").grid(row=2, column=4, sticky="e", padx=5, pady=2)
-entrada_conservacion = tk.Entry(frame_principal)
-entrada_conservacion.grid(row=2, column=5, padx=5, pady=2)
 
 creditos = tk.Label(ventana, text="© Brian Aquino - 2025", font=("Arial", 8), fg="gray")
 creditos.pack(side="bottom", anchor="e", padx=5, pady=5)
@@ -637,9 +615,9 @@ h_scrollbar.pack(side=tk.BOTTOM, fill=tk.X)
 item_actual = None
 
 # TreeView
-columnas = ("Municipio", "Clave", "Ficha Catalogo", "Sección", "Manzana", "Número", "Nombre del Edificio",
-            "Localización", "Barrio", "Siglo Construcción", "Catalogada", "Decretada",
-            "Uso Actual", "Niveles", "Material Construcción", "Tipo de cubierta", "Conservación", "Ultima actualización")
+columnas = ("Identificador", "Clave del Sitio", "Folio Real", "Nombre del Sitio", "Municipio", "Estructuras", "Concentracion de Materiales",
+            "Concheros", "Manifestaciones Gráfico-Rupestres", "Paleontológico", "Yacimiento de Materias Primas", "UTM ESTE NAD 27",
+            "UTM NORTE NAD 27", "UTM ESTE WGS 84", "UTM NORTE WGS 84", "Ultima actualización")
 
 treeview = ttk.Treeview(frame_resultados, columns=columnas, show="headings", yscrollcommand=scroll.set, xscrollcommand= h_scrollbar.set, selectmode="extended")
 for col in columnas:
